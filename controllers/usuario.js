@@ -1,6 +1,6 @@
-import User from "../models/users.js";
+import User from "../models/usuarios.js";
 import bcrypt from "bcrypt";
-import { createToken } from "../services/jwt.js";
+import { createToken } from "../servicios/jwt.js";
 
 // Método de prueba de usuario
 export const testUser = (req, res) => {
@@ -208,40 +208,79 @@ export const updateUser = async (req, res) => {
   }
 }
 
-// Método para agregar una ubicación favorita
-export const addFavoriteLocation = async (req, res) => {
+// Método para subir AVATAR (imagen de perfil) y actualizar el campo image del User
+export const uploadAvatar = async (req, res) => {
   try {
-    const userId = req.user.userId;
-    const locationId = req.body.locationId;
-
-    const user = await User.findById(userId);
-    if (!user) {
-      return res.status(404).send({
-        status: "error",
-        message: "Usuario no encontrado"
-      });
-    }
-
-    if (user.favorites.includes(locationId)) {
+    // Verificar si se ha subido un archivo
+    if(!req.file){
       return res.status(400).send({
         status: "error",
-        message: "La ubicación ya está en favoritos"
+        message: "Error la petición no incluye la imagen"
       });
     }
 
-    user.favorites.push(locationId);
-    await user.save();
+    // Obtener la URL del archivo subido a Cloudinary
+    const avatarUrl = req.file.path; // Esta propiedad contiene la URL de Cloudinary
 
-    return res.status(200).send({
+    // Guardar la imagen en la BD
+    const userUpdated = await User.findByIdAndUpdate(
+      req.user.userId,
+      { image: avatarUrl },
+      { new: true }
+    );
+
+    // verificar si la actualización fue exitosa
+    if (!userUpdated) {
+      return res.status(500).send({
+        status: "error",
+        message: "Eror en la subida de la imagen"
+      });
+    }
+
+    // Devolver respuesta exitosa
+    return res.status(200).json({
       status: "success",
-      message: "Ubicación añadida a favoritos",
-      user
+      user: userUpdated,
+      file: avatarUrl
     });
 
   } catch (error) {
+    console.log("Error al subir archivos", error)
     return res.status(500).send({
       status: "error",
-      message: "Error al añadir la ubicación a favoritos"
+      message: "Error al subir archivos"
+    });
+  }
+}
+
+// Método para mostrar el AVATAR (imagen de perfil)
+export const avatar = async (req, res) => {
+  try {
+    // Obtener el parámetro del archivo desde la url
+    const userId = req.params.file;
+
+    // Buscar al usuario en la base de datos para obtener la URL de Cloudinary
+    const user = await User.findById(userId).select('image');
+
+    // Verificar si el usuario existe y tiene una imagen
+    if (!user || !user.image) {
+      return res.status(404).send({
+        status: "error",
+        message: "No existe la imagen o el usuario"
+      });
+    }
+
+    // Devolver la URL de la imagen desde Cloudinary
+    return res.status(200).json({
+      status: "success",
+      imageUrl: user.image // URL de Cloudinary almacenada en la BD
+    });
+
+  } catch (error) {
+    console.log("Error al mostrar la imagen", error)
+    return res.status(500).send({
+      status: "error",
+      message: "Error al mostrar la imagen"
     });
   }
 }

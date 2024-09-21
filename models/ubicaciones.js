@@ -22,6 +22,11 @@ const LocationSchema = Schema({
     type: Number,
     required: true
   },
+  addedBy: {
+    type: Schema.Types.ObjectId, 
+    ref: 'User', // Referencia a la colección User
+    required: true
+  },
   created_at: {
     type: Date,
     default: Date.now
@@ -32,3 +37,4 @@ const LocationSchema = Schema({
 LocationSchema.plugin(mongoosePaginate);
 
 export default model("Location", LocationSchema, "locations");
+

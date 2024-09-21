@@ -19,6 +19,10 @@ const UserSchema = Schema({
     type: Schema.Types.ObjectId,
     ref: 'Location'
   }],
+  image: {
+    type: String,
+    default: "default.png"
+  },
   created_at: {
     type: Date,
     default: Date.now

@@ -1,6 +1,6 @@
 import { Router } from "express";
 const router = Router();
-import { listUserHistory, addSearchToHistory } from "../controllers/searchHistory.js";
+import { listUserHistory, addSearchToHistory } from "../controllers/historial.js";
 import { ensureAuth } from "../middlewares/auth.js";
 
 // Rutas para gestionar el historial de búsquedas

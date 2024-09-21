@@ -1,6 +1,6 @@
 import { Router } from "express";
 const router = Router();
-import { reportAlert, listAlerts, resolveAlert } from "../controllers/alert.js";
+import { reportAlert, listAlerts, resolveAlert } from "../controllers/alerta.js";
 import { ensureAuth } from "../middlewares/auth.js";
 
 // Rutas para gestionar alertas

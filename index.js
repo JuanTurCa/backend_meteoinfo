@@ -1,11 +1,13 @@
 import express from "express";
 import server from "./database/server.js";
 import cors from "cors";
-import UserRoutes from "./routes/user.js";
-import LocationRoutes from "./routes/location.js";
-import AlertRoutes from "./routes/alert.js";
 import dotenv from "dotenv";
-import SearchHistoryRoutes from "./routes/searchHistory.js";
+
+//Importar Rutas
+import UserRoutes from "./routes/usuario.js";
+import LocationRoutes from "./routes/ubicacion.js"
+import AlertRoutes from "./routes/alerta.js"
+import SearchHistoryRoutes from "./routes/historial.js"
 
 dotenv.config();
 
