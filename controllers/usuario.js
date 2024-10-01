@@ -15,7 +15,7 @@ export const register = async (req, res) => {
   try {
     let params = req.body;
 
-    if (!params.name || !params.email || !params.password) {
+    if (!params.name || !params.last_name || !params.email || !params.password || !params.nick) {
       return res.status(400).send({
         status: "error",
         message: "Faltan datos por enviar"
@@ -24,12 +24,18 @@ export const register = async (req, res) => {
 
     let user_to_save = new User({
       name: params.name,
+      last_name: params.last_name,
+      nick: params.nick,
       email: params.email.toLowerCase(),
-      password: params.password,
-      favorites: []
+      password: params.password
     });
 
-    const existingUser = await User.findOne({ email: user_to_save.email });
+    const existingUser = await User.findOne({
+      $or: [
+        { email: user_to_save.email.toLowerCase() },
+        { nick: user_to_save.nick.toLowerCase() }
+      ]
+    });
 
     if (existingUser) {
       return res.status(409).send({

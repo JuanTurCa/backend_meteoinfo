@@ -24,10 +24,6 @@ const UserSchema = Schema({
     type: String,
     required: true
   },
-  favorites: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Location'
-  }],
   image: {
     type: String,
     default: "default.png"
