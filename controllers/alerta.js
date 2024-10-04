@@ -3,7 +3,7 @@ import Alert from "../models/alertas.js";
 // Reportar una nueva alerta
 export const reportAlert = async (req, res) => {
   try {
-    const { user_id, disaster_type, country, city, latitude, longitude, description, image } = req.body;
+    const { user_id, disaster_type, country, city, latitude, longitude, description, file } = req.body;
 
     // Validar que los campos requeridos estén presentes
     if (!user_id || !disaster_type || !country || !city || !latitude || !longitude || !description) {
@@ -22,7 +22,7 @@ export const reportAlert = async (req, res) => {
       latitude,
       longitude,
       description,
-      image
+      file
     });
 
     // Guardar la nueva alerta en la base de datos

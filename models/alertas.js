@@ -31,7 +31,7 @@ const AlertSchema = Schema({
     required: true
   },
 
-  image: {
+  file: {
     type: String,
     default: "default.png"
   },
