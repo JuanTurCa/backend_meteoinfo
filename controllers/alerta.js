@@ -3,7 +3,15 @@ import Alert from "../models/alertas.js";
 // Reportar una nueva alerta
 export const reportAlert = async (req, res) => {
   try {
-    const { user_id, disaster_type, country, city, latitude, longitude, description, file } = req.body;
+    // Extraer los datos desde `req.body` y `req.file`
+    const { user_id, disaster_type, country, city, latitude, longitude, description } = req.body;
+    
+    let file = "default.png"; // Valor por defecto si no se sube una imagen
+
+    // Si existe un archivo, obtener la URL de la imagen subida (usando, por ejemplo, Cloudinary)
+    if (req.file) {
+      file = req.file.path; // Aquí se asume que Cloudinary devuelve la URL del archivo en `req.file.path`
+    }
 
     // Validar que los campos requeridos estén presentes
     if (!user_id || !disaster_type || !country || !city || !latitude || !longitude || !description) {
@@ -22,7 +30,7 @@ export const reportAlert = async (req, res) => {
       latitude,
       longitude,
       description,
-      file
+      file // Guardamos el archivo si se subió, o "default.png" si no
     });
 
     // Guardar la nueva alerta en la base de datos
