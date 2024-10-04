@@ -3,22 +3,29 @@ import Alert from "../models/alertas.js";
 // Reportar una nueva alerta
 export const reportAlert = async (req, res) => {
   try {
-    const { user_id, disaster_type, location, description } = req.body;
+    const { user_id, disaster_type, country, city, latitude, longitude, description, image } = req.body;
 
-    if (!user_id || !disaster_type || !location || !description) {
+    // Validar que los campos requeridos estén presentes
+    if (!user_id || !disaster_type || !country || !city || !latitude || !longitude || !description) {
       return res.status(400).json({
         status: "error",
         message: "Faltan datos por enviar"
       });
     }
 
+    // Crear una nueva alerta con los datos correctos
     const newAlert = new Alert({
       user_id,
       disaster_type,
-      location,
-      description
+      country,
+      city,
+      latitude,
+      longitude,
+      description,
+      image
     });
 
+    // Guardar la nueva alerta en la base de datos
     await newAlert.save();
 
     return res.status(201).json({

@@ -23,7 +23,7 @@ const LocationSchema = Schema({
     required: true
   },
   addedBy: {
-    type: Schema.Types.ObjectId, 
+    type: Schema.Types.ObjectId,
     ref: 'User', // Referencia a la colección User
     required: true
   },

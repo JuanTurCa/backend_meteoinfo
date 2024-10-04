@@ -11,20 +11,36 @@ const AlertSchema = Schema({
     type: String,
     required: true
   },
-  location: {
-    country: { type: String, required: true },
-    city: { type: String, required: true },
-    latitude: Number,
-    longitude: Number
+
+  country: {
+    type: String,
+    required: true
   },
+
+  city: {
+    type: String,
+    required: true
+  },
+
+  latitude: {type: Number, required: true},
+
+  longitude: {type: Number, required: true},
+
   description: {
     type: String,
     required: true
   },
+
+  image: {
+    type: String,
+    default: "default.png"
+  },
+
   status: {
     type: String,
     default: 'Active'
   },
+
   reported_at: {
     type: Date,
     default: Date.now
